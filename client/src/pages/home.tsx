@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
+import { getImageSrc } from '../utils/getImageSrc';
 
 export type Post = {
   _id: string,
@@ -8,6 +9,7 @@ export type Post = {
   title: string,
   slug: string,
   description: string,
+  thumbnail: string,
   posterUrl: string,
 };
 
@@ -19,6 +21,7 @@ const Home = () => {
 
   useEffect(() => {
     axios.get('http://localhost:8000/posts').then((res) => {
+      console.log(res.data);
       setPosts(res.data);
     }).finally(() => {
       setLoading(false);
@@ -44,10 +47,15 @@ const Home = () => {
           </div>
         </div>
         <div className="row">
-          {posts.map(({ _id, title, slug }) => {
+          {posts.map(({ _id, title, slug, thumbnail }) => {
             return  (
               <div key={_id} className="col-xs-4 mb-3">
                 <div className="card p-3">
+                  <img
+                    src={getImageSrc(thumbnail)}
+                    alt=""
+                    width="100%"
+                  />
                   <h2>
                     {title}
                   </h2>

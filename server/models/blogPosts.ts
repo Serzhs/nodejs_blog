@@ -17,10 +17,10 @@ const BlogPostSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    // posterUrl: {
-    //     type: String,
-    //     required: true
-    // },
+    thumbnail: {
+        type: String,
+        required: true
+    },
 });
 
 export default mongoose.model('Blog Posts', BlogPostSchema);

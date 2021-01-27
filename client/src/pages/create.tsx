@@ -2,20 +2,27 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
+type FormData = {
+  title: string,
+  description: string,
+  thumbnail?: File
+};
 
-const initialData = {
+const initialData: FormData = {
   title: '',
   description: '',
-  thumbnail: ''
 };
 
 const Create = () => {
-  const [formData, setFormData] = useState({ ...initialData });
+  const [formData, setFormData] = useState<FormData>({ ...initialData });
 
   const submitHandler = async () => {
     const formDataObj = new FormData();
 
     Object.entries(formData).forEach(([key, value]) => {
+      if (!value) {
+        return;
+      }
       formDataObj.append(key, value);
     });
 
@@ -78,8 +85,16 @@ const Create = () => {
                     type="file"
                     className="form-control-file"
                     id="thumbnail"
-                    value={formData.thumbnail}
-                    onChange={(e) => setFormData({ ...formData, thumbnail: e.target.value })}
+                    onChange={(e) => {
+
+                      if (!e.target.files) {
+                        return;
+                      }
+
+                      setFormData({ ...formData,
+                        thumbnail: e.target.files[0]
+                      });
+                    }}
                   />
                 </label>
               </div>

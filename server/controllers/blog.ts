@@ -9,21 +9,24 @@ export const getAllBlogPosts = async (req: Request, res: Response) => {
 }
 
 export const createPost = async (req: Request, res: Response) => {
+    const {title, description} = req.body
+
     const data = {
         createdAt: new Date(),
         slug: slugify(req.body.title),
-        ...req.body
+        thumbnail: req.file.path.replace('public', ''),
+        title,
+        description
     }
 
-    // res.json('hello')
     const record = new BlogModel(data)
     let error = record.validateSync();
 
-    if(error) {
-        res.status(400).json({error})
-    } else {
+    if (!error) {
         record.save()
         res.status(200).json("all good")
+    } else {
+        res.status(400).json({error})
     }
 }
 
