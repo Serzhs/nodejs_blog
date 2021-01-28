@@ -1,9 +1,10 @@
 import {Request, Response} from 'express'
-import BlogModel from '../models/blogPosts'
+import PostModel from '../models/posts'
+import CommentModel from '../models/comment'
 import slugify from 'slugify'
 
 export const getAllBlogPosts = async (req: Request, res: Response) => {
-    const data = await BlogModel.find()
+    const data = await PostModel.find()
 
     res.json(data)
 }
@@ -12,14 +13,14 @@ export const createPost = async (req: Request, res: Response) => {
     const {title, description} = req.body
 
     const data = {
-        createdAt: new Date(),
         slug: slugify(req.body.title),
         thumbnail: req.file.path.replace('public', ''),
         title,
         description
     }
 
-    const record = new BlogModel(data)
+    const record = new PostModel(data)
+
     let error = record.validateSync();
 
     if (!error) {
@@ -30,18 +31,26 @@ export const createPost = async (req: Request, res: Response) => {
     }
 }
 
-
 export const getOnePost = async (req: Request, res: Response) => {
-    const record = await BlogModel.findOne({
-        slug: req.params.slug
+    const {slug} = req.params
+    const record = await PostModel.findOne({
+        slug
     })
 
-    res.json(record)
+    const commentRecords = record.comments.map((_id: string) => {
+        return CommentModel.findOne({_id})
+    })
+
+    const comments = await Promise.all(commentRecords)
+
+    const {thumbnail, title, description, createdAt, _id} = record
+
+    res.json({_id, thumbnail, title, description, comments, createdAt})
 }
 
 
 export const deletePost = async (req: Request, res: Response) => {
-    const record = await BlogModel.deleteOne({
+    const record = await PostModel.deleteOne({
         slug: req.params.slug
     })
 

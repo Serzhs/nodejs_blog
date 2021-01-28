@@ -2,8 +2,9 @@ import mongoose from "mongoose";
 
 const BlogPostSchema = new mongoose.Schema({
     createdAt: {
-        type: String,
-        required: true
+        type: Number,
+        required: false,
+        default: Date.now()
     },
     title: {
         type: String,
@@ -21,6 +22,11 @@ const BlogPostSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    comments: {
+        type: [String],
+        required: false,
+        default: []
+    }
 });
 
 export default mongoose.model('Blog Posts', BlogPostSchema);

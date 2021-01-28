@@ -3,6 +3,14 @@ import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 import { getImageSrc } from '../utils/getImageSrc';
 
+
+export type Comment = {
+  _id: string,
+  author: string,
+  comment: string,
+  createdAt: string,
+};
+
 export type Post = {
   _id: string,
   createdAt: string,
@@ -10,7 +18,7 @@ export type Post = {
   slug: string,
   description: string,
   thumbnail: string,
-  posterUrl: string,
+  comments: Comment[]
 };
 
 const Home = () => {
@@ -20,8 +28,7 @@ const Home = () => {
   const history = useHistory();
 
   useEffect(() => {
-    axios.get('http://localhost:8000/posts').then((res) => {
-      console.log(res.data);
+    axios.get(`${process.env.REACT_APP_HOST}/posts`).then((res) => {
       setPosts(res.data);
     }).finally(() => {
       setLoading(false);
@@ -29,7 +36,17 @@ const Home = () => {
   }, []);
 
   if (loading) {
-    return (<h1>Loading...</h1>);
+    return (
+      <section>
+        <div className="container">
+          <div className="row">
+            <div className="col-xs-12 center-xs">
+              <h1>Loading...</h1>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
   }
 
   const blogOpenHandler = (slug: string) => {

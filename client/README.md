@@ -10,7 +10,7 @@
     Route,
     Link,
     Redirect,
-    } from 'react-router-dom';
+    } from 'react-posts-dom';
     import { v4 as uuidv4 } from 'uuid';
     import 'bootstrap/dist/css/bootstrap.min.css';
     import { ToastContainer, toast } from 'react-toastify';
@@ -29,7 +29,7 @@
     "@types/node": "^12.19.3",
     "@types/react": "^16.9.55",
     "@types/react-dom": "^16.9.9",
-    "@types/react-router-dom": "^5.1.6",
+    "@types/react-posts-dom": "^5.1.6",
     "@types/uuid": "^8.3.0",
     "axios": "^0.21.0",
     "bootstrap": "^4.5.3",
@@ -42,7 +42,7 @@
     "react-bottom-scroll-listener": "^4.1.1",
     "react-dom": "^17.0.1",
     "react-lodash": "^0.1.2",
-    "react-router-dom": "^5.2.0",
+    "react-posts-dom": "^5.2.0",
     "react-scripts": "4.0.0",
     "react-toastify": "^6.1.0",
     "typescript": "^4.0.5",

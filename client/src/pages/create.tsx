@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { useHistory } from 'react-router-dom';
 
 type FormData = {
   title: string,
@@ -15,6 +16,7 @@ const initialData: FormData = {
 
 const Create = () => {
   const [formData, setFormData] = useState<FormData>({ ...initialData });
+  const history = useHistory();
 
   const submitHandler = async () => {
     const formDataObj = new FormData();
@@ -26,12 +28,14 @@ const Create = () => {
       formDataObj.append(key, value);
     });
 
-    axios.post('http://localhost:8000/posts/create', formDataObj)
+    axios.post(`${process.env.REACT_APP_HOST}/posts/create`, formDataObj)
       .then((res) => {
         toast('Blog Post has been created', {
           type: 'success'
         });
+
         setFormData({ ...initialData });
+        history.push('/');
       }).catch(() => {
         toast('Unexpected error', {
           type: 'error'
