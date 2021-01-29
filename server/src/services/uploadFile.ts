@@ -27,9 +27,9 @@ export const uploadFile = multer({
     storage: storage,
     limits: {
         fields: 5,
-        fieldNameSize: 50, // TODO: Check if this size is enough
-        fieldSize: 20000, //TODO: Check if this size is enough
-        fileSize: 15000000, // 150 KB for a 1080x1080 JPG 90
+        fieldNameSize: 50,
+        fieldSize: 20000,
+        fileSize: 15000000,
     },
     fileFilter: (_req, file, cb) => {
         checkFileType(file, cb);

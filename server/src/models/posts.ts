@@ -16,7 +16,8 @@ const BlogPostSchema = new mongoose.Schema({
     },
     slug: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     thumbnail: {
         type: String,

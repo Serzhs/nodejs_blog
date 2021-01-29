@@ -9,8 +9,8 @@ import { ToastContainer } from 'react-toastify';
 import Home from './pages/home';
 import Create from './pages/create';
 import Open from './pages/open';
+import Edit from './pages/edit';
 import NotFound from './pages/notFound';
-
 
 const App = () => {
   return (
@@ -41,6 +41,9 @@ const App = () => {
         </Route>
         <Route path="/post/:slug">
           <Open />
+        </Route>
+        <Route path="/edit/post/:slug">
+          <Edit />
         </Route>
         <Route path="/404">
           <NotFound />
