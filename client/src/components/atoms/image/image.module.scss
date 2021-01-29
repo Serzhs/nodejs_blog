@@ -1,0 +1,14 @@
+.figure {
+  width: 100%;
+  position: relative;
+  margin: 0;
+}
+
+.image {
+  object-fit: contain;
+  position: absolute;
+  left: 0;
+  top: 0;
+  max-width: 100%;
+  max-height: 100%
+}

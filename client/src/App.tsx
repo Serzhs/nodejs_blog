@@ -33,19 +33,20 @@ const App = () => {
         </div>
       </header>
       <Switch>
+        <Route exact path="/create">
+          <Create />
+        </Route>
+
+        <Route exact path="/post/:slug">
+          <Open />
+        </Route>
+        <Route exact path="/edit/:slug">
+          <Edit />
+        </Route>
         <Route exact path="/">
           <Home />
         </Route>
-        <Route path="/create">
-          <Create />
-        </Route>
-        <Route path="/post/:slug">
-          <Open />
-        </Route>
-        <Route path="/edit/post/:slug">
-          <Edit />
-        </Route>
-        <Route path="/404">
+        <Route exact path="*">
           <NotFound />
         </Route>
       </Switch>

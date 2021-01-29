@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useHistory } from 'react-router-dom';
+import { NavLink, useHistory } from 'react-router-dom';
 import { getImageSrc } from '../utils/getImageSrc';
-
+import { Spinner } from '../components/atoms/spinner/spinner';
+import { Card } from '../components/molecule/card/card';
+import { useDeletePost } from '../hooks/useDeletePost';
 
 export type Comment = {
   _id: string,
@@ -26,7 +28,7 @@ const Home = () => {
   const [posts, setPosts] = useState<Post[]>([]);
 
   const history = useHistory();
-
+  const [deletePost, deletePostLoading] = useDeletePost();
   useEffect(() => {
     axios.get(`${process.env.REACT_APP_HOST}/posts`).then((res) => {
       setPosts(res.data);
@@ -35,22 +37,14 @@ const Home = () => {
     });
   }, []);
 
-  if (loading) {
-    return (
-      <section>
-        <div className="container">
-          <div className="row">
-            <div className="col-xs-12 center-xs">
-              <h1>Loading...</h1>
-            </div>
-          </div>
-        </div>
-      </section>
-    );
-  }
+  const deleteHandler = (slug: string) => {
+    deletePost(slug);
+    const postClone = [...posts].filter((item) => {
+      return slug !== item.slug;
+    });
 
-  const blogOpenHandler = (slug: string) => {
-    history.push(`/post/${slug}`);
+    setPosts(postClone);
+
   };
 
   return (
@@ -64,26 +58,24 @@ const Home = () => {
           </div>
         </div>
         <div className="row">
+          {loading || deletePostLoading && (
+          <div className="col-xs-12 center-xs">
+            <Spinner />
+          </div>
+          )}
           {posts.map(({ _id, title, slug, thumbnail }) => {
             return  (
-              <div key={_id} className="col-xs-4 mb-3">
-                <div className="card p-3">
-                  <img
-                    src={getImageSrc(thumbnail)}
-                    alt=""
-                    width="100%"
-                  />
-                  <h2>
-                    {title}
-                  </h2>
-                  <button
-                    type="submit"
-                    className="btn btn-primary"
-                    onClick={() => blogOpenHandler(slug)}
-                  >
-                    Read More
-                  </button>
-                </div>
+              <div
+                key={_id}
+                className="col-xs-3"
+              >
+                <Card
+                  title={title}
+                  imgSrc={getImageSrc(thumbnail)}
+                  onReadMore={() => history.push(`/post/${slug}`)}
+                  onEditClick={() => history.push(`/edit/${slug}`)}
+                  onDeleteClick={() => deleteHandler(slug)}
+                />
               </div>
             );
           })}

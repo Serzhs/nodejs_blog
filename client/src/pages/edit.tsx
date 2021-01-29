@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 import { useHistory, useParams } from 'react-router-dom';
 import { Post } from './home';
 import { getImageSrc } from '../utils/getImageSrc';
+import { Spinner } from '../components/atoms/spinner/spinner';
 
 type FormData = {
   title: string,
@@ -28,22 +29,8 @@ const Edit = () => {
     });
   }, []);
 
-  if (loading) {
-    return (
-      <section>
-        <div className="container">
-          <div className="row">
-            <div className="col-xs-12 center-xs">
-              <h1>Loading...</h1>
-            </div>
-          </div>
-        </div>
-      </section>
-    );
-  }
-
   if (!formData) {
-    history.push('/404');
+    // history.push('/404');
     return <></>;
   }
 
@@ -78,64 +65,65 @@ const Edit = () => {
           <div className="col-xs-6 col-xs-offset-3">
             <div className="row">
               <div className="col-xs-12">
-                <form
-                  className="w-100"
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    submitHandler();
-                  }}
-                >
-                  <div className="form-group">
-                    <label htmlFor="name" className="w-100">Title
-                      <input
-                        className="form-control"
-                        id="name"
-                        placeholder="Blog title"
-                        required={true}
-                        value={formData.title}
-                        onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                      />
-                    </label>
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="description" className="w-100">Title
-                      <textarea
-                        className="form-control"
-                        id="description"
-                        placeholder="Blog description"
-                        required={true}
-                        value={formData.description}
-                        onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                      />
-                    </label>
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="thumbnail">
-                      Upload Thumbnail
-                      <br /><br />
-                      <input
-                        type="file"
-                        className="form-control-file"
-                        id="thumbnail"
-                        onChange={(e) => {
+                {loading ? <Spinner /> : (
+                  <form
+                    className="w-100"
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      submitHandler();
+                    }}
+                  >
+                    <div className="form-group">
+                      <label htmlFor="name" className="w-100">Title
+                        <input
+                          className="form-control"
+                          id="name"
+                          placeholder="Blog title"
+                          required={true}
+                          value={formData.title}
+                          onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                        />
+                      </label>
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="description" className="w-100">Title
+                        <textarea
+                          className="form-control"
+                          id="description"
+                          placeholder="Blog description"
+                          required={true}
+                          value={formData.description}
+                          onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                        />
+                      </label>
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="thumbnail">
+                        Upload Thumbnail
+                        <br /><br />
+                        <input
+                          type="file"
+                          className="form-control-file"
+                          id="thumbnail"
+                          onChange={(e) => {
 
-                          if (!e.target.files) {
-                            return;
-                          }
-                          setThumbnailLink(window.URL.createObjectURL(e.target.files[0]));
+                            if (!e.target.files) {
+                              return;
+                            }
+                            setThumbnailLink(window.URL.createObjectURL(e.target.files[0]));
 
-                          setFormData({ ...formData,
-                            thumbnail: e.target.files[0]
-                          });
-                        }}
-                      />
-                    </label>
-                    <img src={thumbnailLink} alt="" className="w-100 mb-4" />
-                  </div>
-                  <button type="submit" className="btn btn-warning">
-                    Submit
-                  </button>
-                </form>
+                            setFormData({ ...formData,
+                              thumbnail: e.target.files[0]
+                            });
+                          }}
+                        />
+                      </label>
+                      <img src={thumbnailLink} alt="" className="w-100 mb-4" />
+                    </div>
+                    <button type="submit" className="btn btn-warning">
+                      Submit
+                    </button>
+                  </form>)}
               </div>
             </div>
           </div>

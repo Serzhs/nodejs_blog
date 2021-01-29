@@ -72,7 +72,7 @@ const Open = () => {
   }
 
   if (!post) {
-    history.push('/404');
+    // history.push('/404');
     return <></>;
   }
 
@@ -88,7 +88,7 @@ const Open = () => {
             <button
               type="button"
               className="btn btn-dark mb-4"
-              onClick={() => history.push(`/edit/post/${slug}`)}
+              onClick={() => history.push(`/edit/${slug}`)}
             >
               Edit
             </button>
