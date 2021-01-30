@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import {mongoConnection} from "../../mongoConfig";
 
 const BlogPostSchema = new mongoose.Schema({
     createdAt: {
@@ -30,4 +31,4 @@ const BlogPostSchema = new mongoose.Schema({
     }
 });
 
-export default mongoose.model('Blog Posts', BlogPostSchema);
+export default mongoConnection.model('Blog Posts', BlogPostSchema);

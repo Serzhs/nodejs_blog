@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import {mongoConnection} from "../../mongoConfig";
 
 const BlogCommentSchema = new mongoose.Schema({
     author: {
@@ -16,4 +17,4 @@ const BlogCommentSchema = new mongoose.Schema({
     },
 });
 
-export default mongoose.model('Blog Comments', BlogCommentSchema);
+export default mongoConnection.model('Blog Comments', BlogCommentSchema);
