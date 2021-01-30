@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { NavLink, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { getImageSrc } from '../utils/getImageSrc';
 import { Spinner } from '../components/atoms/spinner/spinner';
 import { Card } from '../components/molecule/card/card';
