@@ -27,30 +27,29 @@ app.use(
     })
 );
 
-app.use(passport.initialize());
-app.use(passport.session());
-configurePassport(passport);
-
-app.use("/posts", postsRouter);
-app.use("/comments", commentsRouter);
-app.use("/user", userRouter);
-
 const sessionsStore = new MongoStore({
-  mongooseConnection: mongoConnection,
-  collection: "sessions",
+    mongooseConnection: mongoConnection,
+    collection: "sessions",
 });
 
-app.use(
-  session({
+app.use(session({
     secret: process.env.SESSION_SECRET_CODE!,
     resave: false,
     saveUninitialized: true,
     store: sessionsStore,
     cookie: {
-      maxAge: 100000000000, // ms
-    },
-  })
-);
+        secure: false
+    }
+}))
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+configurePassport(passport);
+
+app.use("/posts", postsRouter);
+app.use("/comments", commentsRouter);
+app.use("/user", userRouter);
 
 app.listen(PORT, () => {
   console.log(`⚡️[server]: Server is running at http://localhost:${PORT}`);
