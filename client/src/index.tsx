@@ -3,7 +3,8 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import './styles/base.scss';
-import 'flexboxgrid';
+import './styles/flexboxgrid.scss';
+import './styles/helpers.scss';
 import 'react-toastify/dist/ReactToastify.css';
 
 

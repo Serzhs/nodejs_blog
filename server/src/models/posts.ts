@@ -1,7 +1,8 @@
 import mongoose from "mongoose";
-import {mongoConnection} from "../../mongoConfig";
+import {mongoConnection} from "../../dbConnect";
+import {Comment} from './comment'
 
-const BlogPostSchema = new mongoose.Schema({
+const postSchema = new mongoose.Schema({
     createdAt: {
         type: Number,
         required: false,
@@ -31,4 +32,13 @@ const BlogPostSchema = new mongoose.Schema({
     }
 });
 
-export default mongoConnection.model('Blog Posts', BlogPostSchema);
+export interface Post {
+    title: string,
+    createdAt: string,
+    description: string,
+    slug: string,
+    comments: Comment[],
+    thumbnail: string,
+}
+
+export default mongoConnection.model('Blog Posts', postSchema);

@@ -71,7 +71,8 @@ const Create = () => {
                 </label>
               </div>
               <div className="form-group">
-                <label htmlFor="description" className="w-100">Title
+                <label htmlFor="description" className="w-100">
+                  Body
                   <textarea
                     className="form-control"
                     id="description"

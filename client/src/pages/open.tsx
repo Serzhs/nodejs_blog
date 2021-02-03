@@ -159,6 +159,7 @@ const Open = () => {
                   id="author"
                   className="form-control"
                   placeholder="You name"
+                  maxLength={30}
                   value={commentInput.author}
                   required={true}
                   onChange={(e) => {
@@ -174,6 +175,7 @@ const Open = () => {
                   name="message"
                   id="message"
                   placeholder="You comment"
+                  maxLength={255}
                   className="form-control"
                   value={commentInput.comment}
                   required={true}

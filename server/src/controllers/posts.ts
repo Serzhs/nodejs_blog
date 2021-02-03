@@ -1,5 +1,5 @@
 import {Request, Response} from 'express'
-import PostModel from '../models/posts'
+import PostModel, {Post} from '../models/posts'
 import CommentModel from '../models/comment'
 import slugify from 'slugify'
 import { v4 as uuidv4 } from 'uuid';
@@ -13,6 +13,13 @@ export const getAllBlogPosts = async (req: Request, res: Response) => {
 
 export const createPost = async (req: Request, res: Response) => {
     const {title, description} = req.body
+    const {file} = req
+
+    if(!file?.path) {
+        res.status(400).json('File is requred')
+        return
+    }
+
     let slug = slugify(req.body.title)
     const postWithSameSlug = await PostModel.findOne({slug: slug})
 
@@ -72,7 +79,7 @@ export const deletePost = async (req: Request, res: Response) => {
 
 export const editPost = async (req: Request, res: Response) => {
     const {slug} = req.params
-    const updatedData = req.body
+    const updatedData = req.body as Post
 
     if(req.file) {
 

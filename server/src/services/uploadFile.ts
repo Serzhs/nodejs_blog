@@ -1,4 +1,5 @@
 import multer from "multer";
+import Joi from "joi";
 const path = require("path");
 
 const storage = multer.diskStorage({
@@ -23,7 +24,8 @@ const checkFileType = (file:Express.Multer.File, cb: multer.FileFilterCallback) 
     }
 }
 
-export const uploadFile = multer({
+
+export const uploadFile = (schema: Joi.ObjectSchema<any>) => multer({
     storage: storage,
     limits: {
         fields: 5,
@@ -32,6 +34,13 @@ export const uploadFile = multer({
         fileSize: 15000000,
     },
     fileFilter: (_req, file, cb) => {
-        checkFileType(file, cb);
+
+        const { error } = schema.validate(_req.body);
+
+        if (error) {
+            cb(new Error(`${error}`));
+        } else {
+            checkFileType(file, cb);
+        }
     }
 })

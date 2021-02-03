@@ -1,0 +1,21 @@
+@import "src/styles/variables";
+
+.button {
+  min-height: 40px;
+  background-color: $primary;
+  border: 1px solid $shade;
+  border-radius: 5px;
+  color: $shade;
+  padding: 5px 25px;
+  cursor: pointer;
+  transition: color 0.2s, background-color 0.2s;
+
+  &:hover {
+    background-color: $shade;
+    color: $primary;
+  }
+}
+
+.buttonSecondary {
+
+}

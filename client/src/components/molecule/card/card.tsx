@@ -1,7 +1,10 @@
 import React, { FC } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { Image } from '../../atoms/image/image';
 import style from './card.module.scss';
-
+import { Button } from '../../atoms/button/button';
+import { H3 } from '../../atoms/typography/typography';
 
 type Props = {
   title: string,
@@ -10,7 +13,6 @@ type Props = {
   onEditClick: () => void
   onDeleteClick: () => void
 };
-
 
 export const Card:FC<Props> = ({
   title,
@@ -21,40 +23,42 @@ export const Card:FC<Props> = ({
 }) => {
 
   return (
-  // eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions
     <div
-      className={`${style.card} btn`}
+      className={style.card}
       onClick={onReadMore}
     >
       <Image
-        w={3}
+        w={4}
         h={2}
         src={imgSrc}
         alt={title}
       />
       <div className={style.content}>
-        <h3>{title}</h3>
-        <div className="d-flex justify-content-between">
-          <button
-            type="button"
-            onClick={(e) => {
+        <H3>{title}</H3>
+        <div className={style.cardActions}>
+          <span
+            className={style.action}
+            onClick={(e) =>  {
               e.stopPropagation();
               onEditClick();
             }}
-            className='btn btn-warning'
           >
+            <FontAwesomeIcon icon={faEdit} />
+            {' '}
             Edit
-          </button>
-          <button
-            type="button"
+          </span>
+
+          <span
+            className={`${style.action} ${style.danger}`}
             onClick={(e) => {
               e.stopPropagation();
               onDeleteClick();
             }}
-            className='btn btn-danger'
           >
+            <FontAwesomeIcon icon={faTrash} />
+            {' '}
             Delete
-          </button>
+          </span>
         </div>
       </div>
     </div>

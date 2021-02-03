@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 import { getImageSrc } from '../utils/getImageSrc';
 import { Spinner } from '../components/atoms/spinner/spinner';
 import { Card } from '../components/molecule/card/card';
-import { useDeletePost } from '../hooks/useDeletePost';
+import { useApiCall } from '../hooks/useApiCall';
+import { H1 } from '../components/atoms/typography/typography';
 
 export type Comment = {
   _id: string,
@@ -24,44 +24,42 @@ export type Post = {
 };
 
 const Home = () => {
-  const [loading, setLoading] = useState(true);
   const [posts, setPosts] = useState<Post[]>([]);
+  const { loading, apiCall } = useApiCall();
 
   const history = useHistory();
-  const [deletePost, deletePostLoading] = useDeletePost();
+
   useEffect(() => {
-    axios.get(`${process.env.REACT_APP_HOST}/posts`).then((res) => {
-      setPosts(res.data);
-    }).finally(() => {
-      setLoading(false);
+    apiCall.get('/posts').then((res) => {
+      setPosts(res as Post[]);
     });
   }, []);
 
   const deleteHandler = (slug: string) => {
-    deletePost(slug);
+    apiCall.delete(`/posts/${slug}/delete`);
+
     const postClone = [...posts].filter((item) => {
       return slug !== item.slug;
     });
 
     setPosts(postClone);
-
   };
 
   return (
     <section>
       <div className="container">
-        <div className="row">
+        <div className="row margin-bottom--15">
           <div className="col-xs-12 center-xs">
-            <h1 className="mb-5">
-              Blog posts
-            </h1>
+            <H1>
+              Janis Blog
+            </H1>
           </div>
         </div>
         <div className="row">
-          {loading || deletePostLoading && (
-          <div className="col-xs-12 center-xs">
-            <Spinner />
-          </div>
+          {loading && (
+            <div className="col-xs-12 center-xs">
+              <Spinner />
+            </div>
           )}
           {posts.map(({ _id, title, slug, thumbnail }) => {
             return  (

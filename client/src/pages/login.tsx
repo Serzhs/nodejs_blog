@@ -1,5 +1,7 @@
 import axios from 'axios';
 import React, { useState } from 'react';
+import { Input } from '../components/atoms/input/input';
+import { Button } from '../components/atoms/button/button';
 
 type LoginData = {
   username: string;
@@ -16,7 +18,7 @@ const Login = () => {
 
   const loginHandler = () => {
     axios
-      .post(`${process.env.REACT_APP_HOST}/login`, formData)
+      .post(`${process.env.REACT_APP_HOST}/user/login`, formData)
       .then((res) => {
         console.log(res);
       })
@@ -34,49 +36,57 @@ const Login = () => {
           </div>
         </div>
         <div className="row">
-          <div className="col-xs-6 col-xs-offset-3">
+          <div className="col-xs-4 col-xs-offset-4">
             <form
               onSubmit={(e) => {
                 e.preventDefault();
                 loginHandler();
               }}
             >
-              <label htmlFor="name" className="form-group w-100 mb-3">
-                <span className="d-block mb-1">Username</span>
-                <input
-                  type="text"
-                  id="name"
-                  className="form-control"
-                  placeholder="Your username"
-                  value={formData.username}
-                  onChange={(e) => {
-                    setForData({
-                      ...formData,
-                      username: e.target.value,
-                    });
-                  }}
-                />
-              </label>
-              <label htmlFor="password" className="form-group w-100 mb-3">
-                <span className="d-block mb-1">Password</span>
-                <input
-                  type="password"
-                  id="password"
-                  className="form-control"
-                  placeholder="Password"
-                  value={formData.password}
-                  onChange={(e) => {
-                    setForData({
-                      ...formData,
-                      password: e.target.value,
-                    });
-                  }}
-                />
-              </label>
-              <div className="w-100 text-center">
-                <button type="submit" className="btn btn-primary">
-                  Login
-                </button>
+              <div className="row margin-bottom--15">
+                <div className="col-xs-12">
+                  <Input
+                    type="text"
+                    label="Username"
+                    placeholder="Your username"
+                    value={formData.username}
+                    required={true}
+                    onChange={(value) => {
+                      setForData({
+                        ...formData,
+                        username: value
+                      });
+                    }}
+                  />
+                </div>
+              </div>
+              <div className="row margin-bottom--15">
+                <div className="col-xs-12">
+                  <Input
+                    type="password"
+                    label="password"
+                    placeholder="Your Password"
+                    value={formData.password}
+                    required={true}
+                    onChange={(value) => {
+                      setForData({
+                        ...formData,
+                        password: value
+                      });
+                    }}
+                  />
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-xs-12">
+                  <div>
+                    <Button
+                      type="submit"
+                    >
+                      Login
+                    </Button>
+                  </div>
+                </div>
               </div>
             </form>
           </div>

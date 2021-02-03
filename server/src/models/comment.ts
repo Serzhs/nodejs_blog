@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
-import {mongoConnection} from "../../mongoConfig";
+import {mongoConnection} from "../../dbConnect";
 
-const BlogCommentSchema = new mongoose.Schema({
+const commentSchema = new mongoose.Schema({
     author: {
         type: String,
         required: true
@@ -17,4 +17,10 @@ const BlogCommentSchema = new mongoose.Schema({
     },
 });
 
-export default mongoConnection.model('Blog Comments', BlogCommentSchema);
+export interface Comment {
+    author: string,
+    comment: string,
+    createdAt: string,
+}
+
+export default mongoConnection.model('Blog Comments', commentSchema);

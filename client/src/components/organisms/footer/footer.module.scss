@@ -1,0 +1,9 @@
+@import "src/styles/variables";
+
+.footer {
+    border-top: 2px solid $secondary;
+    background-color: $primary;
+    padding: 15px 0;
+    text-align: center;
+    color: $text
+}

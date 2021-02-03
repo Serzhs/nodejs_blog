@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
-import { mongoConnection } from "../../mongoConfig";
+import { mongoConnection } from "../../dbConnect";
 
-const UserSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema({
   createdAt: {
     type: Number,
     default: Date.now(),
@@ -17,11 +17,10 @@ const UserSchema = new mongoose.Schema({
   },
 });
 
-export interface UserType {
+export interface User {
   createdAt: number;
   username: string;
   password: string;
-  isAdmin: boolean;
 }
 
-export default mongoConnection.model("user", UserSchema);
+export default mongoConnection.model("user", userSchema);
