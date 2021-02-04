@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import bcrypt from "bcryptjs";
-import UserModel from "../models/user";
+import UserModel, {User} from "../models/user";
 
 export const registerUser = async (req: Request, res: Response) => {
   const { username, password, passwordConfirm } = req.body;
@@ -24,17 +24,27 @@ export const registerUser = async (req: Request, res: Response) => {
     });
 
     await newUser.save();
-    res.status(200).send(newUser);
+    res.status(200).send('Successs');
   });
 };
 
 export const loginUser = async (req: Request, res: Response) => {
-  res.send(`Logged In as ${req.user}`);
+  res.send(req.user);
 }
+
+export const logoutUser = async (req: Request, res: Response) => {
+    req.logout();
+    res.json('Logged out')
+}
+
 export const getUser = async (req: Request, res: Response) => {
-    if (req.user) {
-        res.status(200).json(req.user);
+
+    const user = req.user as User
+
+    if(user) {
+        user.password = ''
+        res.status(200).json(user);
     } else {
-        res.send("Nav aktīva usera");
+        res.send(undefined);
     }
 }

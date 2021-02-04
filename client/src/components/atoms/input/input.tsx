@@ -8,6 +8,8 @@ type Props = {
   type: string
   required?: boolean
   value: string
+  minLength?: number
+  maxLength?: number
   onChange: (value: string) => void
 };
 
@@ -19,6 +21,8 @@ export const Input:FC<Props> = ({
   value,
   placeholder,
   required,
+  minLength,
+  maxLength,
   onChange
 }) => {
 
@@ -29,6 +33,8 @@ export const Input:FC<Props> = ({
         className={style.input}
         type={type}
         id={id}
+        minLength={minLength}
+        maxLength={maxLength}
         placeholder={placeholder}
         value={value}
         onChange={(e) => onChange(e.target.value)}

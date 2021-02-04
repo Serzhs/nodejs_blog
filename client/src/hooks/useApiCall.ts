@@ -8,7 +8,7 @@ type Method = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
 type Data = {
   [key: string]: unknown
-};
+} | FormData;
 
 export const useApiCall = () => {
   const [loading, setLoading] = useState(false);
@@ -19,7 +19,7 @@ export const useApiCall = () => {
       method,
       url,
       data,
-      withCredentials: true
+      withCredentials: true,
     }).then((res) => {
       return res.data;
     }).catch(() => {

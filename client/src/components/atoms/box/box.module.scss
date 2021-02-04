@@ -1,0 +1,13 @@
+@import "src/styles/variables";
+
+.box {
+  background-color: $secondary;
+  border-radius: 10px;
+  padding: 25px 15px;
+  width: 100%;
+}
+
+
+.boxSmall {
+  padding: 15px 10px;
+}

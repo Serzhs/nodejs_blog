@@ -17,9 +17,9 @@ const verifyCallBack = async (
       if (!user) {
         return callback(null, false);
       }
-  
+
       const isValid = await bcrypt.compare(password, user.password);
-  
+
       // Ja parole ir pareiza, tad izsaucam callbacku un padodam null un user
       // null - nebija erroru
       // user - user objekts no datubāzes
@@ -41,7 +41,6 @@ const LocalStrategy = localStrategy.Strategy;
 const strategy = new LocalStrategy(verifyCallBack);
 
 export const configurePassport = (pass: typeof passport) => {
-
   pass.use(strategy);
 
   // uztaisa cookie ar iekļautu username

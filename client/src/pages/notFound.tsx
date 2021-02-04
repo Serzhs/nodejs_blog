@@ -1,4 +1,5 @@
 import React from 'react';
+import { H1 } from '../components/atoms/typography/typography';
 
 const NotFound = () => {
   return (
@@ -6,9 +7,9 @@ const NotFound = () => {
       <div className="container">
         <div className="row">
           <div className="col-xs-12 center-xs">
-            <h1 className="mb-5">
+            <H1>
               Page Not Found
-            </h1>
+            </H1>
           </div>
         </div>
       </div>

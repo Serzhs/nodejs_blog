@@ -35,3 +35,19 @@
     opacity: 0.75;
   }
 }
+
+.greetings {
+  font-size: 14px;
+}
+
+.logout {
+  font-size: 14px;
+  text-decoration: underline;
+  margin-left: 10px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+
+  &:hover {
+    opacity: 0.7;
+  }
+}

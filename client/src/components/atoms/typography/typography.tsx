@@ -42,4 +42,10 @@ export const P:FC = ({ children }) => {
   );
 };
 
-
+export const Small:FC = ({ children }) => {
+  return (
+    <span className={styles.info}>
+      {children}
+    </span>
+  );
+};

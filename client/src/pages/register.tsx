@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import { useHistory } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { useApiCall } from '../hooks/useApiCall';
+import { Input } from '../components/atoms/input/input';
+import { Button } from '../components/atoms/button/button';
+import { H1 } from '../components/atoms/typography/typography';
+import { Box } from '../components/atoms/box/box';
 
 type LoginData = {
   username: string;
@@ -15,113 +21,108 @@ const initialLoginDara = {
 
 const Register = () => {
   const [formData, setForData] = useState<LoginData>(initialLoginDara);
+  const { loading, apiCall } = useApiCall();
+  const history = useHistory();
 
   const rgisterHandler = () => {
-    axios
-      .post(`${process.env.REACT_APP_HOST}/user/register`, formData)
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((error) => {
-        console.log(error);
+    apiCall.post('/user/register', formData).then(() => {
+      toast('Registration successful', {
+        type: 'success'
       });
+      history.push('/');
+    });
   };
 
   return (
     <section>
       <div className="container">
         <div className="row">
-          <div className="col-xs-12 center-xs">
-            <h1>Register</h1>
-          </div>
-        </div>
-        <div className="row">
           <div className="col-xs-6 col-xs-offset-3">
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                rgisterHandler();
-              }}
-            >
+            <Box>
               <div className="row">
-                <div className="col-xs-12">
-
-
-                  <label htmlFor="name" className="form-group w-100 mb-3">
-                    <span className="d-block mb-1">Username</span>
-                    <br />
-                    <input
+                <div className="col-xs-12 center-xs">
+                  <H1>Register</H1>
+                </div>
+              </div>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  rgisterHandler();
+                }}
+              >
+                <div className="row margin-bottom--15">
+                  <div className="col-xs-12">
+                    <Input
                       type="text"
-                      id="name"
-                      className="form-control"
+                      label="Username"
                       placeholder="Your username"
+                      value={formData.username}
                       minLength={3}
                       maxLength={30}
                       required={true}
-                      value={formData.username}
-                      onChange={(e) => {
+                      onChange={(value) => {
                         setForData({
                           ...formData,
-                          username: e.target.value,
+                          username: value
                         });
                       }}
                     />
-                  </label>
+                  </div>
                 </div>
-              </div>
-              <div className="row">
-                <div className="col-xs-12">
-                  <label htmlFor="password" className="form-group w-100 mb-3">
-                    <span className="d-block mb-1">Password</span>
-                    <br />
-                    <input
-                      type="password"
-                      id="password"
-                      className="form-control"
-                      placeholder="Password"
-                      minLength={3}
-                      required={true}
-                      value={formData.password}
-                      onChange={(e) => {
-                        setForData({
-                          ...formData,
-                          password: e.target.value,
-                        });
-                      }}
-                    />
-                  </label>
+                <div className="row">
+                  <div className="col-xs-12">
+                    <div className="row margin-bottom--15">
+                      <div className="col-xs-12">
+                        <Input
+                          type="password"
+                          label="Password"
+                          placeholder="Your Password"
+                          value={formData.password}
+                          minLength={3}
+                          required={true}
+                          onChange={(value) => {
+                            setForData({
+                              ...formData,
+                              password: value
+                            });
+                          }}
+                        />
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div className="row">
-                <div className="col-xs-12">
-                  <label htmlFor="password" className="form-group w-100 mb-3">
-                    <span className="d-block mb-1">Password</span>
-                    <br />
-                    <input
+                <div className="row margin-bottom--25">
+                  <div className="col-xs-12">
+                    <Input
                       type="password"
-                      id="passwordConfirm"
-                      className="form-control"
-                      placeholder="Confirm password"
-                      required={true}
-                      minLength={3}
+                      label="Confirm Password"
+                      placeholder="Confirm your Password"
                       value={formData.passwordConfirm}
-                      onChange={(e) => {
+                      minLength={3}
+                      required={true}
+                      onChange={(value) => {
                         setForData({
                           ...formData,
-                          passwordConfirm: e.target.value,
+                          passwordConfirm: value
                         });
                       }}
                     />
-                  </label>
+                  </div>
                 </div>
-              </div>
-
-              <div className="w-100 text-center">
-                <button type="submit" className="btn btn-primary">
-                  Login
-                </button>
-              </div>
-            </form>
+                <div className="row">
+                  <div className="col-xs-12">
+                    <div>
+                      <Button
+                        type="submit"
+                        disabled={loading}
+                      >
+                        Register
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </Box>
           </div>
         </div>
       </div>

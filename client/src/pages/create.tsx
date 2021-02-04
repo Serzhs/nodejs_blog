@@ -1,7 +1,13 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useHistory } from 'react-router-dom';
+import { useApiCall } from '../hooks/useApiCall';
+import { H1 } from '../components/atoms/typography/typography';
+import { Box } from '../components/atoms/box/box';
+import { Input } from '../components/atoms/input/input';
+import { Textarea } from '../components/atoms/textarea/textarea';
+import { Button } from '../components/atoms/button/button';
+import { FileUpload } from '../components/molecule/fileUpload/fileUpload';
 
 type FormData = {
   title: string,
@@ -17,8 +23,16 @@ const initialData: FormData = {
 const Create = () => {
   const [formData, setFormData] = useState<FormData>({ ...initialData });
   const history = useHistory();
+  const { loading, apiCall } = useApiCall();
 
-  const submitHandler = async () => {
+  const submitHandler = () => {
+    if (!formData.thumbnail) {
+      toast('Cover image is requiered', {
+        type: 'error'
+      });
+      return;
+    }
+
     const formDataObj = new FormData();
 
     Object.entries(formData).forEach(([key, value]) => {
@@ -28,18 +42,12 @@ const Create = () => {
       formDataObj.append(key, value);
     });
 
-    axios.post(`${process.env.REACT_APP_HOST}/posts/create`, formDataObj)
+    apiCall.post('/posts/create', formDataObj)
       .then((res) => {
         toast('Blog Post has been created', {
           type: 'success'
         });
-
-        setFormData({ ...initialData });
         history.push('/');
-      }).catch(() => {
-        toast('Unexpected error', {
-          type: 'error'
-        });
       });
   };
 
@@ -48,65 +56,81 @@ const Create = () => {
       <div className="container">
         <div className="row">
           <div className="col-xs-6 col-xs-offset-3">
-            <h1>
-              Create Post
-            </h1>
-            <form
-              className="w-100"
-              onSubmit={(e) => {
-                e.preventDefault();
-                submitHandler();
-              }}
-            >
-              <div className="form-group">
-                <label htmlFor="name" className="w-100">Title
-                  <input
-                    className="form-control"
-                    id="name"
-                    placeholder="Blog title"
-                    required={true}
-                    value={formData.title}
-                    onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                  />
-                </label>
+            <div className="row">
+              <div className="col-xs-12">
+                <H1>
+                  Create Post
+                </H1>
               </div>
-              <div className="form-group">
-                <label htmlFor="description" className="w-100">
-                  Body
-                  <textarea
-                    className="form-control"
-                    id="description"
-                    placeholder="Blog description"
-                    required={true}
-                    value={formData.description}
-                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                  />
-                </label>
-              </div>
-              <div className="form-group">
-                <label htmlFor="thumbnail">
-                  Upload Thumbnail
-                  <input
-                    type="file"
-                    className="form-control-file"
-                    id="thumbnail"
-                    onChange={(e) => {
+            </div>
 
-                      if (!e.target.files) {
-                        return;
-                      }
-
-                      setFormData({ ...formData,
-                        thumbnail: e.target.files[0]
-                      });
-                    }}
-                  />
-                </label>
-              </div>
-              <button type="submit" className="btn btn-warning">
-                Submit
-              </button>
-            </form>
+            <Box>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  submitHandler();
+                }}
+              >
+                <div className="row margin-bottom--15">
+                  <div className="col-xs-12">
+                    <Input
+                      type="text"
+                      label="Blog title"
+                      placeholder="Title"
+                      value={formData.title}
+                      required={true}
+                      onChange={(value) => {
+                        setFormData({
+                          ...formData,
+                          title: value
+                        });
+                      }}
+                    />
+                  </div>
+                </div>
+                <div className="row margin-bottom--15">
+                  <div className="col-xs-12">
+                    <FileUpload
+                      label="Cover Image"
+                      onChange={(file: File) => {
+                        setFormData({ ...formData,
+                          thumbnail: file
+                        });
+                      }}
+                    />
+                  </div>
+                </div>
+                <div className="row margin-bottom--25">
+                  <div className="col-xs-12">
+                    <Textarea
+                      type="text"
+                      label="Blog description"
+                      placeholder="Blog description"
+                      value={formData.description}
+                      required={true}
+                      onChange={(value) => {
+                        setFormData({
+                          ...formData,
+                          description: value
+                        });
+                      }}
+                    />
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-xs-12">
+                    <div>
+                      <Button
+                        type="submit"
+                        disabled={loading}
+                      >
+                        Create post
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </Box>
           </div>
         </div>
       </div>

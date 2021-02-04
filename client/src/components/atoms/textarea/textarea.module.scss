@@ -1,0 +1,31 @@
+@import "src/styles/variables";
+
+.wrapper {
+  width: 100%;
+}
+
+.label {
+  font-size: 14px;
+  margin-bottom: 5px;
+  width: 100%;
+  display: inline-flex;
+  text-transform: capitalize;
+}
+
+.textarea {
+  background-color: $white;
+  border: 1px solid $shade;
+  color: $text;
+  padding: 5px 10px;
+  height: 40px;
+  border-radius: 5px;
+  width: 100%;
+  max-width: 100%;
+  min-width: 100%;
+  max-height: 200px;
+  min-height: 70px;
+
+  &::placeholder {
+    color: $placeholder;
+  }
+}

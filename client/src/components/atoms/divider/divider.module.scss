@@ -1,0 +1,8 @@
+@import "src/styles/variables";
+
+.divider {
+  margin: 35px 0;
+  border: none;
+  height: 1px;
+  background-color: $shade;
+}

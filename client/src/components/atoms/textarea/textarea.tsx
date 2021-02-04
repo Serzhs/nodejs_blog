@@ -23,10 +23,11 @@ export const Textarea:FC<Props> = ({
 }) => {
 
   return (
-    <label htmlFor={id}>
-      <span>{label}</span>
+    <label className={style.wrapper} htmlFor={id}>
+      <span className={style.label}>{label}</span>
       <textarea
         id={id}
+        className={style.textarea}
         placeholder={placeholder}
         value={value}
         onChange={(e) => onChange(e.target.value)}

@@ -5,6 +5,12 @@ import { useHistory, useParams } from 'react-router-dom';
 import { Post } from './home';
 import { getImageSrc } from '../utils/getImageSrc';
 import { Spinner } from '../components/atoms/spinner/spinner';
+import { useApiCall } from '../hooks/useApiCall';
+import { Input } from '../components/atoms/input/input';
+import { FileUpload } from '../components/molecule/fileUpload/fileUpload';
+import { Textarea } from '../components/atoms/textarea/textarea';
+import { Button } from '../components/atoms/button/button';
+import { Box } from '../components/atoms/box/box';
 
 type FormData = {
   title: string,
@@ -12,27 +18,26 @@ type FormData = {
   thumbnail?: File
 };
 
+const initialData: FormData = {
+  title: '',
+  description: '',
+};
+
 const Edit = () => {
-  const [formData, setFormData] = useState<FormData>();
-  const [thumbnailLink, setThumbnailLink] = useState<string>('');
-  const [loading, setLoading] = useState(true);
+  const [formData, setFormData] = useState<FormData>(initialData);
+  const [thumbnailLink, setThumbnailLink] = useState('');
   const { slug } = useParams<{slug: string}>();
   const history = useHistory();
+  const { loading, apiCall } = useApiCall();
 
   useEffect(() => {
-    axios.get(`${process.env.REACT_APP_HOST}/posts/${slug}`).then((res) => {
-      const { title, description, thumbnail } = res.data as Post;
+    apiCall.get(`/posts/${slug}`).then((res) => {
+      const { title, description, thumbnail } = res as Post;
       setThumbnailLink(getImageSrc(thumbnail));
       setFormData({ title, description });
-    }).finally(() => {
-      setLoading(false);
     });
   }, []);
 
-  if (!formData) {
-    // history.push('/404');
-    return <></>;
-  }
 
   const submitHandler = async () => {
     const formDataObj = new FormData();
@@ -44,17 +49,13 @@ const Edit = () => {
       formDataObj.append(key, value);
     });
 
-    axios.put(`${process.env.REACT_APP_HOST}/posts/${slug}/edit`, formDataObj)
+    apiCall.put(`/posts/${slug}/edit`, formDataObj)
       .then((res) => {
         toast('Blog Post has been updated', {
           type: 'success'
         });
 
         history.push('/');
-      }).catch(() => {
-        toast('Unexpected error', {
-          type: 'error'
-        });
       });
   };
 
@@ -66,64 +67,76 @@ const Edit = () => {
             <div className="row">
               <div className="col-xs-12">
                 {loading ? <Spinner /> : (
-                  <form
-                    className="w-100"
-                    onSubmit={(e) => {
-                      e.preventDefault();
-                      submitHandler();
-                    }}
-                  >
-                    <div className="form-group">
-                      <label htmlFor="name" className="w-100">Title
-                        <input
-                          className="form-control"
-                          id="name"
-                          placeholder="Blog title"
-                          required={true}
-                          value={formData.title}
-                          onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                        />
-                      </label>
-                    </div>
-                    <div className="form-group">
-                      <label htmlFor="description" className="w-100">Title
-                        <textarea
-                          className="form-control"
-                          id="description"
-                          placeholder="Blog description"
-                          required={true}
-                          value={formData.description}
-                          onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                        />
-                      </label>
-                    </div>
-                    <div className="form-group">
-                      <label htmlFor="thumbnail">
-                        Upload Thumbnail
-                        <br /><br />
-                        <input
-                          type="file"
-                          className="form-control-file"
-                          id="thumbnail"
-                          onChange={(e) => {
-
-                            if (!e.target.files) {
-                              return;
-                            }
-                            setThumbnailLink(window.URL.createObjectURL(e.target.files[0]));
-
-                            setFormData({ ...formData,
-                              thumbnail: e.target.files[0]
-                            });
-                          }}
-                        />
-                      </label>
-                      <img src={thumbnailLink} alt="" className="w-100 mb-4" />
-                    </div>
-                    <button type="submit" className="btn btn-warning">
-                      Submit
-                    </button>
-                  </form>)}
+                  <Box>
+                    <form
+                      className="w-100"
+                      onSubmit={(e) => {
+                        e.preventDefault();
+                        submitHandler();
+                      }}
+                    >
+                      <div className="row">
+                        <div className="col-xs-12">
+                          <Input
+                            type="text"
+                            label="Blog title"
+                            placeholder="Title"
+                            value={formData.title}
+                            required={true}
+                            onChange={(value) => {
+                              setFormData({
+                                ...formData,
+                                title: value
+                              });
+                            }}
+                          />
+                        </div>
+                      </div>
+                      <div className="row">
+                        <div className="col-xs-12">
+                          <FileUpload
+                            label="Cover Image"
+                            imageSrc={thumbnailLink}
+                            onChange={(file: File) => {
+                              setFormData({ ...formData,
+                                thumbnail: file
+                              });
+                            }}
+                          />
+                        </div>
+                      </div>
+                      <div className="row margin-bottom--25">
+                        <div className="col-xs-12">
+                          <Textarea
+                            type="text"
+                            label="Blog description"
+                            placeholder="Blog description"
+                            value={formData.description}
+                            required={true}
+                            onChange={(value) => {
+                              setFormData({
+                                ...formData,
+                                description: value
+                              });
+                            }}
+                          />
+                        </div>
+                      </div>
+                      <div className="row">
+                        <div className="col-xs-12">
+                          <div>
+                            <Button
+                              type="submit"
+                              disabled={loading}
+                            >
+                              Create post
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                  </Box>
+                )}
               </div>
             </div>
           </div>

@@ -11,10 +11,6 @@ const userSchema = new mongoose.Schema({
     unique: true,
   },
   password: String,
-  isAdmin: {
-    type: Boolean,
-    default: false,
-  },
 });
 
 export interface User {
