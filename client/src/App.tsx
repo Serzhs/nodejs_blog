@@ -16,9 +16,12 @@ import { Header } from './components/organisms/header/header';
 import { Footer } from './components/organisms/footer/footer';
 import { useApiCall } from './hooks/useApiCall';
 import { Spinner } from './components/atoms/spinner/spinner';
+import { PrivateCreate } from './privateRoutes/create';
+import { PrivateEdit } from './privateRoutes/edit';
 
-type User = {
+export type User = {
   username: string;
+  isAdmin: boolean;
 };
 
 type UserContextTypes = {
@@ -30,8 +33,8 @@ export const UserContext = React.createContext<UserContextTypes | undefined>(und
 
 const App = () => {
   const [user, setUser] = useState<User | undefined>();
+  const [pageLoaded, setPageLoaded] = useState(false);
   const { loading, apiCall } = useApiCall();
-
 
   useEffect(() => {
     let isCancelled = false;
@@ -40,6 +43,8 @@ const App = () => {
       if (!isCancelled && userData) {
         setUser(userData);
       }
+    }).finally(() => {
+      setPageLoaded(true);
     });
 
     return () => {
@@ -47,7 +52,7 @@ const App = () => {
     };
   }, []);
 
-  if (loading) {
+  if (loading || !pageLoaded) {
     return (
       <div className="row center-xs">
         <Spinner />
@@ -62,9 +67,18 @@ const App = () => {
           <ToastContainer />
           <Header />
           <Switch>
-            <Route exact path="/create">
+            <PrivateCreate
+              path="/create"
+              user={user}
+            >
               <Create />
-            </Route>
+            </PrivateCreate>
+            <PrivateEdit
+              path="/edit/:slug"
+              user={user}
+            >
+              <Edit />
+            </PrivateEdit>
             <Route exact path="/login">
               <Login />
             </Route>
@@ -74,9 +88,6 @@ const App = () => {
             <Route exact path="/post/:slug">
               <Open />
             </Route>
-            <Route exact path="/edit/:slug">
-              <Edit />
-            </Route>
             <Route exact path="/">
               <Home />
             </Route>
@@ -85,10 +96,10 @@ const App = () => {
             </Route>
           </Switch>
         </div>
-        <div className="footer">
-          <Footer />
-        </div>
       </UserContext.Provider>
+      <div className="footer">
+        <Footer />
+      </div>
     </Router>
   );
 };

@@ -38,7 +38,6 @@ export const logoutUser = async (req: Request, res: Response) => {
 }
 
 export const getUser = async (req: Request, res: Response) => {
-
     const user = req.user as User
 
     if(user) {

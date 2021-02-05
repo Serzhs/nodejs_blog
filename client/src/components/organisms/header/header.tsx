@@ -29,7 +29,7 @@ export const Header = () => {
             </NavLink>
           </div>
           <div className="col-xs-6 center-xs">
-            <Nav />
+            <Nav user={user?.user} />
           </div>
           <div className="col-xs-3 d-flex end-xs">
             {!user?.user ? (

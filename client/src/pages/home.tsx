@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { getImageSrc } from '../utils/getImageSrc';
 import { Spinner } from '../components/atoms/spinner/spinner';
 import { Card } from '../components/molecule/card/card';
 import { useApiCall } from '../hooks/useApiCall';
 import { H1 } from '../components/atoms/typography/typography';
+import { UserContext } from '../App';
 
 export type Comment = {
   _id: string,
@@ -26,6 +27,8 @@ export type Post = {
 const Home = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const { loading, apiCall } = useApiCall();
+
+  const user = useContext(UserContext);
 
   const history = useHistory();
 
@@ -65,7 +68,7 @@ const Home = () => {
             return  (
               <div
                 key={_id}
-                className="col-xs-3"
+                className="col-xs-3 flex"
               >
                 <Card
                   title={title}
@@ -73,6 +76,7 @@ const Home = () => {
                   onReadMore={() => history.push(`/post/${slug}`)}
                   onEditClick={() => history.push(`/edit/${slug}`)}
                   onDeleteClick={() => deleteHandler(slug)}
+                  user={user ? user.user : undefined}
                 />
               </div>
             );

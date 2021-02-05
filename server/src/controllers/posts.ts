@@ -64,6 +64,9 @@ export const getOnePost = async (req: Request, res: Response) => {
 }
 
 export const deletePost = async (req: Request, res: Response) => {
+
+    return res.json(123)
+
     const {slug} = req.params
 
     const record = await PostModel.findOneAndDelete({

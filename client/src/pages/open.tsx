@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import { useHistory, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -14,6 +14,7 @@ import { Box } from '../components/atoms/box/box';
 import { Input } from '../components/atoms/input/input';
 import { Textarea } from '../components/atoms/textarea/textarea';
 import { Button } from '../components/atoms/button/button';
+import { UserContext } from '../App';
 
 type CommentInput = {
   author: string
@@ -41,6 +42,8 @@ const Open = () => {
   const history = useHistory();
   const { loading, apiCall } = useApiCall();
   const { slug } = useParams<{slug: string}>();
+
+  const user = useContext(UserContext);
 
   useEffect(() => {
     apiCall.get(`/posts/${slug}`).then((res) => {
@@ -113,7 +116,9 @@ const Open = () => {
                   </div>
                 </div>
                 <div className="row margin-bottom--15">
-                  {comments.map(({ comment, author, _id, createdAt: commentTime }) => {
+                  {comments.map(({
+                    comment, author, _id, createdAt: commentTime
+                  }) => {
                     return (
                       <div key={_id} className="col-xs-12 margin-bottom--10">
                         <Box small={true}>
@@ -130,13 +135,12 @@ const Open = () => {
                               <Small>{comment}</Small>
                             </div>
                           </div>
-
-
                         </Box>
                       </div>
                     );
                   })}
                 </div>
+                {user?.user && (
                 <div className="row">
                   <div className="col-xs-12">
                     <form
@@ -200,6 +204,7 @@ const Open = () => {
                     </form>
                   </div>
                 </div>
+                )}
               </>
             )}
           </div>

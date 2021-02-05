@@ -17,6 +17,7 @@ export interface User {
   createdAt: number;
   username: string;
   password: string;
+  isAdmin: boolean;
 }
 
 export default mongoConnection.model("user", userSchema);

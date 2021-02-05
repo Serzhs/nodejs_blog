@@ -22,10 +22,11 @@ export const useApiCall = () => {
       withCredentials: true,
     }).then((res) => {
       return res.data;
-    }).catch(() => {
+    }).catch((e) => {
       toast('Something went Wrong', {
         type: 'error'
       });
+      return Promise.reject(e);
     }).finally(() => {
       setLoading(false);
     });

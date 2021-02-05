@@ -37,7 +37,6 @@ const Login = () => {
         user?.setUser(res);
       }
 
-
       history.push('/');
     });
   };

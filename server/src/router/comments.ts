@@ -3,10 +3,10 @@ import {createPost, getAllBlogPosts, getOnePost, deletePost} from "../controller
 import {uploadFile} from "../services/uploadFile";
 import {createPostComment, getPostComment} from "../controllers/comments";
 import {createCommentValidation} from "../validation/comments";
+import {isAuth} from "../permissions/isAuth";
 
 const blogPostsRouter = express.Router();
 
-blogPostsRouter.get('/', getPostComment);
-blogPostsRouter.post('/:slug/create/', createCommentValidation, createPostComment);
+blogPostsRouter.post('/:slug/create/', isAuth, createCommentValidation, createPostComment);
 
 export default blogPostsRouter;

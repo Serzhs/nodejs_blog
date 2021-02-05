@@ -1,4 +1,4 @@
-import express, { NextFunction, Request, Response } from "express";
+import express from "express";
 import session from "express-session";
 import passport from "passport";
 import connectMongo from "connect-mongo";
@@ -9,7 +9,7 @@ import "dotenv/config";
 import { mongoConnection } from "./dbConnect";
 import { configurePassport } from "./passportConfig";
 import userRouter from "./src/router/users";
-var bodyParser = require('body-parser');
+const bodyParser = require('body-parser');
 
 const app = express();
 const PORT = 8000;

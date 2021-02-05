@@ -3,12 +3,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { Image } from '../../atoms/image/image';
 import style from './card.module.scss';
-import { Button } from '../../atoms/button/button';
 import { H3 } from '../../atoms/typography/typography';
+import { User } from '../../../App';
 
 type Props = {
   title: string,
   imgSrc: string,
+  user?: User,
   onReadMore: () => void
   onEditClick: () => void
   onDeleteClick: () => void
@@ -17,10 +18,13 @@ type Props = {
 export const Card:FC<Props> = ({
   title,
   imgSrc,
+  user,
   onReadMore,
   onEditClick,
   onDeleteClick
 }) => {
+
+  const isAdmin = user?.isAdmin;
 
   return (
     <div
@@ -35,6 +39,7 @@ export const Card:FC<Props> = ({
       />
       <div className={style.content}>
         <H3>{title}</H3>
+        {user &&  (
         <div className={style.cardActions}>
           <span
             className={style.action}
@@ -48,6 +53,7 @@ export const Card:FC<Props> = ({
             Edit
           </span>
 
+          {isAdmin && (
           <span
             className={`${style.action} ${style.danger}`}
             onClick={(e) => {
@@ -59,7 +65,9 @@ export const Card:FC<Props> = ({
             {' '}
             Delete
           </span>
+          )}
         </div>
+        )}
       </div>
     </div>
   );

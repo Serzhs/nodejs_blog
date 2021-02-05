@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useHistory, useParams } from 'react-router-dom';
@@ -11,6 +11,7 @@ import { FileUpload } from '../components/molecule/fileUpload/fileUpload';
 import { Textarea } from '../components/atoms/textarea/textarea';
 import { Button } from '../components/atoms/button/button';
 import { Box } from '../components/atoms/box/box';
+import { UserContext } from '../App';
 
 type FormData = {
   title: string,
