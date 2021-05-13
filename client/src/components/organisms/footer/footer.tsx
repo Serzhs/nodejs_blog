@@ -8,7 +8,7 @@ export const Footer = () => {
       <div className="container">
         <div className="row">
           <div className="col-xs-12">
-            © 2021-{new Date().getFullYear()} Jānis Seržants. All rights reserved. :)
+            © 2021-{new Date().getFullYear()} Jānis Seržants. All rights reserved.
           </div>
         </div>
       </div>
